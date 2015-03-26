@@ -428,9 +428,9 @@ sub SliceVideoByKeyFrames {
 sub SliceVideoByThreads
 {
     $main::sizes{"slice_duration_sec"} = ceil( $main::videoInfo{durationsecs} / $main::encoding_params{"threads"} );
-    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>&1 | grep -n frame,video,1 | awk 'BEGIN { FS=\",\" } { print \$1 \" \" \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,\"\.\"); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec} ){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str \",\" a[i]; } print str;}' | tr -d '\n'";
+    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | grep -n frame,video,1 | awk 'BEGIN { FS=\",\" } { print \$1 \" \" \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,\"\.\"); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec} ){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str \",\" a[i]; } print str;}' | tr -d '\n'";
 
-    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>&1 | grep -n frame,video,1 | awk 'BEGIN { FS="," } { print \$1 " " \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,"\."); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec}){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str "," a[i]; } print str;}' | tr -d '\n'`;
+    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | grep -n frame,video,1 | awk 'BEGIN { FS="," } { print \$1 " " \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,"\."); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec}){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str "," a[i]; } print str;}' | tr -d '\n'`;
 
     my @keyframes = split( ',', $threaded_key_frames );
     $threaded_key_frames = join( ',', @keyframes );
