@@ -106,8 +106,8 @@ print "\n-------------------------------START-----------------------------------
 print "\nStarted: " . strftime( "%Y-%m-%d %H:%M:%S", localtime($time_start) ) . "\n\n";
 
 $no_resize                       //= 1;
-$encoding_params{"threads"}      //= 8;
-$temp_slices                     //= 8;
+$encoding_params{"threads"}      //= 4;
+$temp_slices                     //= 4;
 $max_temp_frames                 //= 800;
 $temp_size                       //= 25;
 $encoding_params{"opus_bitrate"} //= 70;
@@ -428,9 +428,9 @@ sub SliceVideoByKeyFrames {
 sub SliceVideoByThreads
 {
     $main::sizes{"slice_duration_sec"} = ceil( $main::videoInfo{durationsecs} / $main::encoding_params{"threads"} );
-    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | grep -n frame,video,1 | awk 'BEGIN { FS=\",\" } { print \$1 \" \" \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,\"\.\"); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec} ){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str \",\" a[i]; } print str;}' | tr -d '\n'";
+    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | awk -F, '\$3==1 && \$5 - previous >= $main::sizes{slice_duration_sec} {printf(\"%d,\", NR); previous=\$5}' ";
 
-    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | grep -n frame,video,1 | awk 'BEGIN { FS="," } { print \$1 " " \$5 }' | sed 's/:frame//g' | awk 'BEGIN { previous=0; frameIdx=0; size=0; } { split(\$2,time,"\."); current=time[1]; if (current-previous >= $main::sizes{slice_duration_sec}){ a[frameIdx]=\$1; frameIdx++; size++; previous=current;} } END { str=a[0]; for(i=1;i<size;i++) { str = str "," a[i]; } print str;}' | tr -d '\n'`;
+    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null |awk -F, '\$3==1 && \$5 - previous >= $main::sizes{slice_duration_sec} {printf("%d,", NR); previous=\$5}'`;
 
     my @keyframes = split( ',', $threaded_key_frames );
     $threaded_key_frames = join( ',', @keyframes );
@@ -654,7 +654,7 @@ sample - Using Getopt::Long and Pod::Usage
 
 Multithreaded VP9 encoding
 
-Данная версия является альфой от 22.03.2015, за обновлениями следите в https://2ch.hk/s/
+Данная версия является альфой от 08.04.2015, за обновлениями следите в https://2ch.hk/s/
 
 
 2ch-webm-resizer.pl [options] [file_to_encode]
@@ -672,7 +672,7 @@ Multithreaded VP9 encoding
 
 		Quality:
 
-		-crf (Default: 33) target quality quantizer
+		-crf (Default: 15) target quality quantizer
 		-qmin (Default: 8) maximum allowed quality while encoding with crf
 		-qmax (Default: 60) minimum allowed quality while encoding with crf
 		-cpu_used (Default: 1) cpu_used value for encoding (-16...16)
@@ -681,7 +681,7 @@ Multithreaded VP9 encoding
 
 		Performance:
 
-		-threads (Default: 8) number of ffmpeg encoder threads
+		-threads (Default: 4) number of ffmpeg encoder threads
 
 		Unimplemented:
 
