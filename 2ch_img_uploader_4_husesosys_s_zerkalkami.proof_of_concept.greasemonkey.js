@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name        Photo uploader
-// @namespace   *2ch.hk/p/*
-// @include     https://2ch.hk/p/
-// @version     1
-// @grant       none
+// @name           Photo uploader
+// @description    Добавляет чудо-кнопку
+// @author         Anonymous
+// @license        LOLWUT?
+// @version        0.0000001
+// @include        https://2ch.hk/p/*
+// @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_img_uploader_4_husesosys_s_zerkalkami.proof_of_concept.greasemonkey.js
 // ==/UserScript==
-
 
 
 
