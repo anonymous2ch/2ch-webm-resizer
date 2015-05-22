@@ -27,7 +27,7 @@ $('.postbtn-options').click(function(){
 	window.ournum=$(this).data('num');
 
 });
- var $fuckingbutton= '<div class="send_status" style="background-color:red;"><input id="fileupload" type="file" name="files">Файлы отправляются ПРИ ВЫБОРЕ</div>';
+ var $fuckingbutton= '<div class="send_status" style="background-color:red;"><input id="fileupload" type="file" name="files">Р¤Р°Р№Р»С‹ РѕС‚РїСЂР°РІР»СЏСЋС‚СЃСЏ РџР Р Р’Р«Р‘РћР Р•</div>';
 $('form#postform').prepend($fuckingbutton);
 
 
@@ -46,7 +46,7 @@ $('#fileupload').on('change',function(){
         success: function(){
         	 $(".send_status").css('background-color','none');
 
- $(".send_status").html('Отправка удалась <img src="https://img.luvka.ru/'+window.ournum+'">');
+ $(".send_status").html('РћС‚РїСЂР°РІРєР° СѓРґР°Р»Р°СЃСЊ <img src="https://img.luvka.ru/'+window.ournum+'">');
         },
         error:function(){
           $(".send_status").html('there was an error while submitting');
