@@ -3,9 +3,9 @@
 // @description    Добавляет чудо-кнопку
 // @author         Anonymous
 // @license        LOLWUT?
-// @version        0.0000001
+// @version        0.0000002
 // @include        https://2ch.hk/p/*
-// @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_img_uploader_4_husesosys_s_zerkalkami.proof_of_concept.greasemonkey.js
+// @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_img_uploader_4_husesosys_s_zerkalkami.proof_of_concept.user.js
 // ==/UserScript==
 
 
@@ -28,13 +28,24 @@ $('.postbtn-options').click(function(){
 	window.ournum=$(this).data('num');
 
 });
+
+$('.de-btn-rep').click (function(event){
+	window.ournum=$( event.target ).closest('div.post').data('num');
+
+});
+
+$('.posttime-reflink').click (function(event){
+	window.ournum=$( event.target ).closest('div.post').data('num');
+
+});
+
+
  var $fuckingbutton= '<div class="send_status" style="background-color:red;"><input id="fileupload" type="file" name="files">Файлы отправляются ПРИ ВЫБОРЕ</div>';
 $('form#postform').prepend($fuckingbutton);
 
 
 $('#fileupload').on('change',function(){
 
-     console.log("handleFileUpload called");
      var url = "https://img.luvka.ru/upload/"+window.ournum+"/";
      var file = $('#fileupload').get(0).files[0];
 
@@ -45,12 +56,12 @@ $('#fileupload').on('change',function(){
         processData: false,
         contentType: false,
         success: function(){
-        	 $(".send_status").css('background-color','none');
+        	 $(".send_status").css('background-color','green');
 
- $(".send_status").html('Отправка удалась <img src="https://img.luvka.ru/'+window.ournum+'">');
+ $(".send_status").html('Отправка удалась!');
         },
         error:function(){
-          $(".send_status").html('there was an error while submitting');
+          $(".send_status").html('Ошибка');
         }
     });
   });
