@@ -3,7 +3,7 @@
 // @namespace   https://*2ch.hk/*
 // @description Adds playlist to webm
 // @include     https://2ch.hk/*
-// @version        0.0000001
+// @version        0.0000002
 // @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_webm_playlist.user.js
 // ==/UserScript==
 
@@ -70,7 +70,7 @@ jQuery.cachedScript = function( url, options ) {
 		refElem = $id('webm-icon-' + num);
 		refElem.parentNode.insertBefore(closeWebm, refElem.nextSibling);
 
-        filetag = '<div class="video-container"><video preload="none" data-videoid="'+counter+'" id="player'+ counter+'" controls="controls" name="media"><source src="' + src + '" type="video/webm" width="200" class="video" ></video></div>';
+        filetag = '<div class="video-container"><video   width="100%" height="100%" preload="none" data-videoid="'+counter+'" id="player'+ counter+'" controls="controls" name="media"><source src="' + src + '" type="video/webm" width="200" class="video" ></video></div>';
     }
     $id('exlink-' + num).innerHTML = filetag;
 
@@ -82,7 +82,7 @@ jQuery.cachedScript = function( url, options ) {
 	$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'https://img.luvka.ru/playlist/src/css/mediaelementplayer.css') );
 
 	$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'https://img.luvka.ru/playlist/src/css/mejs-skins.css') );
-
+$('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css' ) );
 
 function appendMediaEvents($node, media) {
 	var
@@ -187,8 +187,8 @@ function startplayer(playernum){
         mode: 'native',
 
         playlistposition: 'bottom',
-        features: [ 'shuffle','prevtrack', 'seekable', 'controls', 'playpause', 'nexttrack',  'shuffle', 'playlist', 'current', 'progress', 'duration', 'volume'],
-         alwaysShowControls: true,
+        features: [ 'prevtrack', 'seekable', 'controls', 'playpause', 'nexttrack',  'shuffle', 'playlist', 'current', 'progress', 'duration', 'volume'],
+         alwaysShowControls: false,
 
     iPadUseNativeControls: true,
     // force iPhone's native controls
@@ -196,7 +196,7 @@ function startplayer(playernum){
     // force Android's native controls
     AndroidUseNativeControls: true,
     // forces the hour marker (##:00:00)
-    alwaysShowHours: true,
+    alwaysShowHours: false,
     // show framecount in timecode (##:00:00:00)
     pauseOtherPlayers: true,
         		success: function(me,node) {
@@ -256,7 +256,7 @@ $('audio, video').bind('error', function(e) {
 });
 
 
-
+ 	$.cachedScript( "https://code.jquery.com/ui/1.11.4/jquery-ui.js");
 	$.cachedScript( "https://img.luvka.ru/playlist/src/js/me-namespace.js").done(function( script ) {
 		$.cachedScript( "https://img.luvka.ru/playlist/src/js/me-utility.js");
 	$.cachedScript( "https://img.luvka.ru/playlist/src/js/me-i18n.js");
@@ -277,7 +277,10 @@ $('audio, video').bind('error', function(e) {
 	$.cachedScript( "https://img.luvka.ru/playlist/src/js/mep-feature-fullscreen.js");
 	$.cachedScript( "https://img.luvka.ru/playlist/src/js/mep-feature-playlist.js").done(function( script ) {
 	$.cachedScript( "https://img.luvka.ru/playlist/src/js/jquery-reverse-order.js");
-startplayer(1);
+//startplayer(1);
+  $(function() {
+    $( ".video-container" ).resizable();
+  });
 
 	});
 
@@ -290,5 +293,3 @@ startplayer(1);
 
 
 });
-
-
