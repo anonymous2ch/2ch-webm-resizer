@@ -4,7 +4,7 @@
 // @description Adds playlist to webm
 // @include     https://2ch.hk/*
 // @version        0.0000001
-// @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_webmplaylist.user.js
+// @updateURL      https://raw.githubusercontent.com/anonymous2ch/2ch-webm-resizer/master/2ch_webm_playlist.user.js
 // ==/UserScript==
 
 
@@ -61,12 +61,12 @@ jQuery.cachedScript = function( url, options ) {
 			'href': src,
 			'id': 'close-webm-' + num,
 			'class': 'close-webm',
-			'html': '[Закрыть]',
+			'html': '[Р—Р°РєСЂС‹С‚СЊ]',
 			'onclick': ' return expand(\'' + num + "\','" + src + "','" + thumb_src + "'," + o_w + ',' + o_h + ',' + n_w + ',' + n_h + ', 1);'
 		});
 
 		//var closeWebm = document.createElement('span');
-  		//closeWebm.innerHTML = '<a href="' + src + '" name="expandfunc" style="display:none" onClick="return expand(\'' + num + "\','" + src + "','" + thumb_src + "'," + o_w + ',' + o_h + ',' + n_w + ',' + n_h + ', 1);" class="close-webm">[Закрыть]</a>';;
+  		//closeWebm.innerHTML = '<a href="' + src + '" name="expandfunc" style="display:none" onClick="return expand(\'' + num + "\','" + src + "','" + thumb_src + "'," + o_w + ',' + o_h + ',' + n_w + ',' + n_h + ', 1);" class="close-webm">[Р—Р°РєСЂС‹С‚СЊ]</a>';;
 		refElem = $id('webm-icon-' + num);
 		refElem.parentNode.insertBefore(closeWebm, refElem.nextSibling);
 
