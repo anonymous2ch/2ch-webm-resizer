@@ -114,7 +114,7 @@ $encoding_params{"opus_bitrate"} //= 70;
 $encoding_params{"qmin"}         //= 8;
 $encoding_params{"qmax"}         //= 60;
 $encoding_params{"crf"}          //= 15;
-$encoding_params{"cpu_used"}     //= 1;
+$encoding_params{"cpu_used"}     //= -1;
 $no_audio                        //= 0;
 $deadline                        //= "1000000";
 $no_resize = 1;
@@ -428,9 +428,9 @@ sub SliceVideoByKeyFrames {
 sub SliceVideoByThreads
 {
     $main::sizes{"slice_duration_sec"} = ceil( $main::videoInfo{durationsecs} / $main::encoding_params{"threads"} );
-    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | awk -F, '\$3==1 && \$5 - previous >= $main::sizes{slice_duration_sec} {printf(\"%d,\", NR); previous=\$5}' ";
+    print "ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null | awk -F, '\$4==1 && \$6 - previous >= $main::sizes{slice_duration_sec} {printf(\"%d,\", NR); previous=\$6}' ";
 
-    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null |awk -F, '\$3==1 && \$5 - previous >= $main::sizes{slice_duration_sec} {printf("%d,", NR); previous=\$5}'`;
+    my $threaded_key_frames = `ffprobe -show_frames -select_streams v:0 -print_format csv $main::filenames{filename}  2>/dev/null |awk -F, '\$4==1 && \$6 - previous >= $main::sizes{slice_duration_sec} {printf("%d,", NR); previous=\$6}'`;
 
     my @keyframes = split( ',', $threaded_key_frames );
     $threaded_key_frames = join( ',', @keyframes );
@@ -469,7 +469,7 @@ sub EncodeVideo
     print join( " ", (
             '-stats',
             '-hide_banner',
-            '-cpu-used', $main::encoding_params{"cpu_used"},
+         #   '-cpu-used', $main::encoding_params{"cpu_used"},
             '-aq-mode',  $main::encoding_params{"aq_mode"},
             '-c:v',      'libvpx-vp9',
             '-y',
@@ -498,7 +498,7 @@ sub EncodeVideo
                 '-stats',
                 '-i', $main::filenames{'filename_without_extension'} . "-temp-work-slice" . $padded . $main::filenames{'extension'},
                 '-hide_banner',
-                '-cpu-used',    $main::encoding_params{"cpu_used"},
+             #   '-cpu-used',    $main::encoding_params{"cpu_used"},
                 '-passlogfile', $main::filenames{filename_without_extension} . '-temp-work-passlog' . $padded,
                 '-aq-mode',     $main::encoding_params{"aq_mode"},
                 '-c:v',         'libvpx-vp9',
@@ -536,7 +536,7 @@ sub EncodeVideo
                 '-stats',
                 '-i', $main::filenames{'filename_without_extension'} . "-temp-work-slice" . $padded . $main::filenames{'extension'},
                 '-hide_banner',
-                '-cpu-used',    $main::encoding_params{"cpu_used"},
+             #   '-cpu-used',    $main::encoding_params{"cpu_used"},
                 '-passlogfile', $main::filenames{filename_without_extension} . '-temp-work-passlog' . $padded,
                 '-aq-mode',     $main::encoding_params{"aq_mode"},
                 '-c:v',         'libvpx-vp9',
