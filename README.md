@@ -1,4 +1,4 @@
-Быдлокод неистребим, но мы скажем что это перл виноват, нечитаемый, ко-ко-ко, нутыпонял...
+Official project support IRC channel: #s2ch
 
 Multithreaded VP9 encoding
 
